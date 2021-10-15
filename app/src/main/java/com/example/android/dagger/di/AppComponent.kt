@@ -2,16 +2,14 @@ package com.example.android.dagger.di
 
 import android.content.Context
 import com.example.android.dagger.main.MainActivity
-import com.example.android.dagger.registration.RegistrationActivity
-import com.example.android.dagger.registration.enterdetails.EnterDetailsFragment
-import com.example.android.dagger.registration.termsandconditions.TermsAndConditionsFragment
+import com.example.android.dagger.registration.RegistrationComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 // Definition of a Dagger component that adds info from the StorageModule to the graph
 @Singleton
-@Component(modules = [StorageModule::class])
+@Component(modules = [StorageModule::class, AppSubcomponents::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
@@ -21,8 +19,8 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun inject(activity: RegistrationActivity)
-    fun inject(fragment: EnterDetailsFragment)
-    fun inject(fragment: TermsAndConditionsFragment)
+    // Expose RegistrationComponent factory from the graph
+    fun registrationComponent(): RegistrationComponent.Factory
+
     fun inject(activity: MainActivity)
 }
